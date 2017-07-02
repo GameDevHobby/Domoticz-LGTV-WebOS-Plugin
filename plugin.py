@@ -2,7 +2,7 @@
 #       LG TV WebOS 3 Plugin Author: Chris Gheen @GameDevHobby, 2017
 #       
 """
-<plugin key="lgtv" name="LG TV (with Kodi remote)" author="Chris Gheen @GameDevHobby" version="0.5" wikilink="" externallink="http://www.lg.com/us/tvs">
+<plugin key="lgtv" name="LG TV (with Kodi remote)" author="Chris Gheen @GameDevHobby" version="0.5" wikilink="https://github.com/GameDevHobby/lgtv-webos-domoticz-plugin" externallink="http://www.lg.com/us/tvs">
     <description>
 * Enable remote start on your TV: [Settings] => [Network] => [Home Network Setup] => [Remote Start] => [On]<br/>
 * Give your TV a static IP address, or make a DHCP reservation for a specific IP address in your router.<br/>
