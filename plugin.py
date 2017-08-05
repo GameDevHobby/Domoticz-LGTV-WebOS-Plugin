@@ -59,6 +59,7 @@ class BasePlugin:
         #Domoticz.Debug(str(p.returncode))
         #Domoticz.Debug(out)
         #Domoticz.Debug(err)
+        self.debug = False
 
         if p.returncode == 1:
             return str(err)
@@ -69,8 +70,10 @@ class BasePlugin:
     def onStart(self):
         global _tv
         
-        if Parameters["Mode6"] == "Debug": Domoticz.Debugging(1)
-        
+        if Parameters["Mode6"] == "Debug": 
+            Domoticz.Debugging(1)
+            self.debug = True
+
         #TODO: get number of inputs and apps to build list
         
         self.SourceOptions3 =   {   "LevelActions"  : "||||||", 
@@ -109,8 +112,8 @@ class BasePlugin:
             Domoticz.Heartbeat(updateInterval)
         else:
             Domoticz.Heartbeat(30)
-        
-        DumpConfigToLog()
+        if self.debug == True:
+            DumpConfigToLog()
 
         return #--> return True
 
@@ -246,6 +249,7 @@ class BasePlugin:
             tvStatus = ''#_tv.get_power_status()
         else:
             tvStatus = 'active'
+        
         Domoticz.Debug('Status TV: ' + tvStatus)
 
         if tvStatus == 'active':                            # TV is on
