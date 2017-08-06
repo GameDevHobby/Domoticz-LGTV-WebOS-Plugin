@@ -44,9 +44,10 @@ class BasePlugin:
     startTime = ''
     endTime = ''
     perc_playingTime = 0
+    debug = False
 
     def run(self, command, arg=""):
-        cmd = "python3 plugins/lgtv/lg.py " + Parameters["Address"] + " -c " + command 
+        cmd = "python3 " + Parameters["HomeFolder"] + "lg.py " + Parameters["Address"] + " -c " + command 
         if arg != "":
             cmd = cmd + " -a " + arg
 
@@ -246,10 +247,11 @@ class BasePlugin:
         #Domoticz.Debug(out)
 
         if 'TimeoutError()' in out:
-            tvStatus = ''#_tv.get_power_status()
+            tvStatus = 'off'#_tv.get_power_status()
         else:
             tvStatus = 'active'
-        
+
+        #Domoticz.Debug(out)
         Domoticz.Debug('Status TV: ' + tvStatus)
 
         if tvStatus == 'active':                            # TV is on
