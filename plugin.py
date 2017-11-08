@@ -334,12 +334,15 @@ class BasePlugin:
         if Parameters["Mode3"] == "Volume":
             #self.tvVolume = _tv.get_volume_info()
             output = self.run("get-volume")#.replace("\\n'", "").replace("'", "").replace("b", "")
+            # Check if output is a digit instead of garbage
+            if not str(output).isdigit():
+                output = 0
             mute = self.run("get-mute")
             mute_level = 2
             if mute == "True":
                 mute_level = 0
             
-            Domoticz.Debug("vol: " + output)
+            Domoticz.Debug("vol: " + str(output))
             self.tvVolume = int(output)
             if self.tvVolume != None: UpdateDevice(2, mute_level, str(self.tvVolume))
                 
