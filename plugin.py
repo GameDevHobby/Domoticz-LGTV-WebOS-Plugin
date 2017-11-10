@@ -295,8 +295,8 @@ class BasePlugin:
         return
     
     def GetTVInfo(self):
-        currentApp = self.run("current-app")
-        currentInput = self.run("get-input")
+        currentApp = str(self.run("current-app")).rstrip()
+        currentInput = str(self.run("get-input")).rstrip()
         currentChannel = self.run("get-channel")
         currentInfo = self.run("info")
 
