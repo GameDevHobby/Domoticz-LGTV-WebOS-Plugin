@@ -314,13 +314,13 @@ class BasePlugin:
         else:                               # No channel info found
             self.tvPlaying = currentApp  # When TV plays apps, no title information (in this case '') is available, so assume Netflix is playing
             UpdateDevice(1, 1, self.tvPlaying)
-            if "HDMI1" in self.tvPlaying:
+            if "hdmi1" in self.tvPlaying.lower():
                 self.tvSource = 20
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI1
-            elif "HDMI2" in self.tvPlaying:
+            elif "hdmi2" in self.tvPlaying.lower():
                 self.tvSource = 30
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI2
-            elif "HDMI3" in self.tvPlaying:
+            elif "hdmi3" in self.tvPlaying.lower():
                 self.tvSource = 40
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI3
             elif "hulu" in self.tvPlaying:
