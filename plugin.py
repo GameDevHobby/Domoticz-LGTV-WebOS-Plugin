@@ -295,8 +295,8 @@ class BasePlugin:
         return
     
     def GetTVInfo(self):
-        currentApp = self.run("current-app")
-        currentInput = self.run("get-input")
+        currentApp = str(self.run("current-app")).rstrip()
+        currentInput = str(self.run("get-input")).rstrip()
         currentChannel = self.run("get-channel")
         currentInfo = self.run("info")
 
@@ -307,20 +307,37 @@ class BasePlugin:
         Domoticz.Debug("Info: " + currentInfo)
 
         if not "errorCode" in currentChannel:#self.tvPlaying['programTitle'] != None:      # Get information on channel and program title if tuner of TV is used
-            self.tvPlaying = str(currentChannel + ' (' + currentInfo + ')' )
+            # pylgtv seems to return invalid JSON, so parse the fragment ourselves
+            if "channelName" in currentChannel:
+                currentChannelInfo = currentChannel.split(',')
+                currentChannelName = next((s for s in currentChannelInfo if 'channelName' in s), None).split('\'')[3]
+            else:
+                currentChannelName = None
+
+            if "channelNumber" in currentChannel:
+                currentChannelInfo = currentChannel.split(',')
+                currentChannelNumber = next((s for s in currentChannelInfo if 'channelNumber' in s), None).split('\'')[3]
+            else:
+                currentChannelNumber = None
+
+            if currentChannelNumber is not None:
+                self.tvPlaying = str(currentChannelNumber + ': ' + currentChannelName )
+            else:
+                self.tvPlaying = str(currentChannel + ' (' + currentInfo + ')' )
+
             UpdateDevice(1, 1, self.tvPlaying)
             self.tvSource = 10
             UpdateDevice(3, 1, str(self.tvSource))        # Set source device to TV
         else:                               # No channel info found
             self.tvPlaying = currentApp  # When TV plays apps, no title information (in this case '') is available, so assume Netflix is playing
             UpdateDevice(1, 1, self.tvPlaying)
-            if "HDMI1" in self.tvPlaying:
+            if "hdmi1" in self.tvPlaying.lower():
                 self.tvSource = 20
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI1
-            elif "HDMI2" in self.tvPlaying:
+            elif "hdmi2" in self.tvPlaying.lower():
                 self.tvSource = 30
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI2
-            elif "HDMI3" in self.tvPlaying:
+            elif "hdmi3" in self.tvPlaying.lower():
                 self.tvSource = 40
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI3
             elif "hulu" in self.tvPlaying:
