@@ -5,8 +5,9 @@ import logging
 import argparse
 import socket
 import struct
+import asyncio
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(filename='lgtv-error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 class LgCommand (object):
     def __init__(self, ip):
@@ -186,9 +187,16 @@ def main():
     
     cmd = LgCommand(args.ip)
     if(args.command):
+        logging.info("Running Command: " + args.command)
         print(cmd.run(args.command, args.arg))
     else:
         cmd.check()
         print("TV is on.")
-                
-main()
+
+try:
+    main()
+except asyncio.TimeoutError as te:
+    print("TimeoutError() occurred, is the TV off? ")
+except:
+    logging.exception("Oops:")
+    print (sys.exc_info())
