@@ -212,19 +212,25 @@ class BasePlugin:
                         self.GetTVInfo()
                     if Level == 20:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABaAw==") #HDMI1
+                        self.run("app", "com.webos.app.hdmi1")
                         self.tvPlaying = "HDMI 1"
                     if Level == 30:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABbAw==") #HDMI2
+                        self.run("app", "com.webos.app.hdmi2")
                         self.tvPlaying = "HDMI 2"
                     if Level == 40:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABcAw==") #HDMI3
-                        self.tvPlaying = "HDMI 3"
+                        self.tvPlaying = "HDMI 3"                        
+                        self.run("app", "com.webos.app.hdmi3")
                     if Level == 50:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABdAw==") #HDMI4
-                        self.tvPlaying = "HDMI 4"
+                        self.tvPlaying = "Hulu"
+                        self.run("app", "hulu")
                     if Level == 60:
                         #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #Netflix
                         self.tvPlaying = "Netflix"
+                        self.run("app", "netflix")
+
                     self.tvSource = Level
                     self.SyncDevices()
             
