@@ -335,24 +335,29 @@ class BasePlugin:
             self.tvSource = 10
             UpdateDevice(3, 1, str(self.tvSource))        # Set source device to TV
         else:                               # No channel info found
-            self.tvPlaying = currentApp  # When TV plays apps, no title information (in this case '') is available, so assume Netflix is playing
-            UpdateDevice(1, 1, self.tvPlaying)
+            # When TV plays apps, no title information is available, it can return '' or 'com.webos.app.*'
+            self.tvPlaying = currentApp.replace('com.webos.app.', '').title()  # Set the appname as fallback 
             if "hdmi1" in self.tvPlaying.lower():
                 self.tvSource = 20
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI1
+                self.tvPlaying = 'HDMI1'
             elif "hdmi2" in self.tvPlaying.lower():
                 self.tvSource = 30
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI2
+                self.tvPlaying = 'HDMI2'
             elif "hdmi3" in self.tvPlaying.lower():
                 self.tvSource = 40
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI3
-            elif "hulu" in self.tvPlaying:
+                self.tvPlaying = 'HDMI3'
+            elif "hulu" in self.tvPlaying.lower():
                 self.tvSource = 50
-                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to HDMI4
-            elif "netflix" in self.tvPlaying:
+                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Hulu
+            elif "netflix" in self.tvPlaying.lower():
                 self.tvSource = 60
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Netflix
-            
+
+            UpdateDevice(1, 1, self.tvPlaying)
+
         # Get volume information of TV
         if Parameters["Mode3"] == "Volume":
             #self.tvVolume = _tv.get_volume_info()
