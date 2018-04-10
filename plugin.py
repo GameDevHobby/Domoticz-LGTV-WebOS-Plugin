@@ -78,7 +78,7 @@ class BasePlugin:
         #TODO: get number of inputs and apps to build list
         
         self.SourceOptions3 =   {   "LevelActions"  : "||||||", 
-                                    "LevelNames"    : "Off|TV|HDMI1|HDMI2|HDMI3|Hulu|Netflix|Amazon|Youtube",
+                                    "LevelNames"    : "Off|TV|HDMI1|HDMI2|HDMI3|Hulu|Netflix|Amazon|Youtube|iPlayer|Unknown",
                                     "LevelOffHidden": "true",
                                     "SelectorStyle" : "0"
                                 }
@@ -242,6 +242,9 @@ class BasePlugin:
                         #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #iPlayer
                         self.tvPlaying = "iPlayer"
                         self.run("app", "Bbc.Iplayer.3.0")
+                    if Level == 100:
+                        #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #Unknown
+                        self.tvPlaying = "Unknown"                        
 
                     self.tvSource = Level
                     self.SyncDevices()
@@ -376,6 +379,9 @@ class BasePlugin:
             elif "iplayer" in self.tvPlaying.lower():
                 self.tvSource = 90
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to iPlayer
+            else:
+                self.tvSource = 100
+                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Unknown
 
             UpdateDevice(1, 1, self.tvPlaying)
 
