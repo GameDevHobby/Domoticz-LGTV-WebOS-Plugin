@@ -78,7 +78,7 @@ class BasePlugin:
         #TODO: get number of inputs and apps to build list
         
         self.SourceOptions3 =   {   "LevelActions"  : "||||||", 
-                                    "LevelNames"    : "Off|TV|HDMI1|HDMI2|HDMI3|Hulu|Netflix",
+                                    "LevelNames"    : "Off|TV|HDMI1|HDMI2|HDMI3|Hulu|Netflix|Amazon|Youtube",
                                     "LevelOffHidden": "true",
                                     "SelectorStyle" : "0"
                                 }
@@ -230,6 +230,18 @@ class BasePlugin:
                         #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #Netflix
                         self.tvPlaying = "Netflix"
                         self.run("app", "netflix")
+                    if Level == 70:
+                        #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #Amazon
+                        self.tvPlaying = "Amazon"
+                        self.run("app", "Lovefilm")
+                    if Level == 80:
+                        #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #Youtube
+                        self.tvPlaying = "Youtube"
+                        self.run("app", "Youtube.Leanback.V4")
+                    if Level == 90:
+                        #_tv.send_req_ircc("AAAAAgAAABoAAAB8Aw==") #iPlayer
+                        self.tvPlaying = "iPlayer"
+                        self.run("app", "Bbc.Iplayer.3.0")
 
                     self.tvSource = Level
                     self.SyncDevices()
@@ -355,6 +367,15 @@ class BasePlugin:
             elif "netflix" in self.tvPlaying.lower():
                 self.tvSource = 60
                 UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Netflix
+            elif "lovefilm" in self.tvPlaying.lower():
+                self.tvSource = 70
+                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Amazon
+            elif "youtube" in self.tvPlaying.lower():
+                self.tvSource = 80
+                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to Youtube
+            elif "iplayer" in self.tvPlaying.lower():
+                self.tvSource = 90
+                UpdateDevice(3, 1, str(self.tvSource))    # Set source device to iPlayer
 
             UpdateDevice(1, 1, self.tvPlaying)
 
