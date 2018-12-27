@@ -209,7 +209,8 @@ class BasePlugin:
                 if Command == 'Set Level':
                     if Level == 10:
                         #_tv.send_req_ircc("AAAAAQAAAAEAAAAAAw==") #TV Num1
-                        self.GetTVInfo()
+                        self.run("app", "com.webos.app.livetv")
+						self.GetTVInfo()
                     if Level == 20:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABaAw==") #HDMI1
                         self.run("app", "com.webos.app.hdmi1")
