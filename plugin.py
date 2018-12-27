@@ -210,7 +210,7 @@ class BasePlugin:
                     if Level == 10:
                         #_tv.send_req_ircc("AAAAAQAAAAEAAAAAAw==") #TV Num1
                         self.run("app", "com.webos.app.livetv")
-						self.GetTVInfo()
+                        self.GetTVInfo()
                     if Level == 20:
                         #_tv.send_req_ircc("AAAAAgAAABoAAABaAw==") #HDMI1
                         self.run("app", "com.webos.app.hdmi1")
@@ -364,7 +364,9 @@ class BasePlugin:
             #self.tvVolume = _tv.get_volume_info()
             output = self.run("get-volume")#.replace("\\n'", "").replace("'", "").replace("b", "")
             # Check if output is a digit instead of garbage
-            if not str(output).isdigit():
+            try:
+                output = int(output)
+            except ValueError:
                 output = 0
             mute = self.run("get-mute")
             mute_level = 2
