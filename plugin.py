@@ -2,7 +2,7 @@
 #       LG TV WebOS 3 Plugin Author: Chris Gheen @GameDevHobby, 2017
 #       
 """
-<plugin key="lgtv" name="LG TV (with Kodi remote)" author="Chris Gheen @GameDevHobby" version="0.5" wikilink="https://github.com/GameDevHobby/lgtv-webos-domoticz-plugin" externallink="http://www.lg.com/us/tvs">
+<plugin key="lgtv" name="LG TV (with Kodi remote)" author="Chris Gheen @GameDevHobby" version="0.7" wikilink="https://github.com/GameDevHobby/lgtv-webos-domoticz-plugin" externallink="http://www.lg.com/us/tvs">
     <description>
 * Enable remote start on your TV: [Settings] => [Network] => [Home Network Setup] => [Remote Start] => [On]<br/>
 * Give your TV a static IP address, or make a DHCP reservation for a specific IP address in your router.<br/>
@@ -18,6 +18,7 @@
                 <option label="False" value="Fixed" default="true" />
             </options>
         </param>
+        <param field="Mode4" label="Notifier Name" width="100px" default=""/>
         <param field="Mode5" label="Update interval (sec)" width="30px" required="true" default="30"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
@@ -115,7 +116,10 @@ class BasePlugin:
             Domoticz.Heartbeat(30)
         if self.debug == True:
             DumpConfigToLog()
-
+        if Parameters["Mode4"] != "":
+            Domoticz.Notifier(Parameters["Mode4"])
+        else:
+            Domoticz.Log("Notifications are off, add a Notifier Name to enable.")
         return #--> return True
 
     def onConnect(self, Status, Description):
@@ -270,6 +274,10 @@ class BasePlugin:
 
         return
 
+    def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
+        Domoticz.Log("Notification: " + Name + "," + Subject + "," + Text + "," + Status + "," + str(Priority) + "," + Sound + "," + ImageFile)
+        self.run("send-message", "\"" + Text + "\"")
+
     def SyncDevices(self):
         # TV is off
         if self.powerOn == False:
@@ -392,6 +400,9 @@ def onMessage(Data, Status, Extra):
 
 def onCommand(Unit, Command, Level, Hue):
     _plugin.onCommand(Unit, Command, Level, Hue)
+
+def onNotification(Name, Subject, Text, Status, Priority, Sound, ImageFile):
+    _plugin.onNotification(Name, Subject, Text, Status, Priority, Sound, ImageFile)
 
 def onDisconnect():
     _plugin.onDisconnect()

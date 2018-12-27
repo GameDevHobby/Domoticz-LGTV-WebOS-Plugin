@@ -45,7 +45,9 @@ class LgCommand (object):
             'close': self.close,
             'rewind': self.rewind,
             'fast-forward': self.fast_forward,
-
+            
+            'send-message': self.send_message,
+            
             'enter': self.enter,
             'delete': self.delete,
 
@@ -56,6 +58,8 @@ class LgCommand (object):
     def run(self, command, arg=None):
         return self.commandLines[command](arg);
 
+    def send_message(self, arg):
+        return self.client.send_message(arg)
 
     def delete(self, arg):
         return self.client.send_delete_key()
