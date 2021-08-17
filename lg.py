@@ -11,7 +11,8 @@ logging.basicConfig(filename='lgtv-error.log', level=logging.ERROR, format='%(as
 
 class LgCommand (object):
     def __init__(self, ip):
-        self.client = WebOsClient(ip)
+        KEYPATH = '.pylgtv'
+        self.client = WebOsClient(ip,KEYPATH+ip)
 
         self.commandLines = {
             'off': self.off, 
